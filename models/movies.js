@@ -47,6 +47,11 @@ module.exports = function(mongoose) {
 			youtube:		[]
 		},
 
+		has_chapters: {
+			type: 		Boolean,
+			default: 	false,
+		},
+
 		mi_status: {
 			type: 		Boolean,
 			default: 	false,
