@@ -22,10 +22,12 @@ A Node.js/MongoDB movie library creator.
   * Generate a new API key.
   * Follow the steps until you get your key.
 2. Clone github repository, enter the repo directory.  
+
+   ```shell
+   git clone https://github.com/rodrigopolo/movielib.git  
+   cd movielib
    ```
-   git clone https://github.com/rodrigopolo/movielib.git
-   cd cd movielib/
-   ```
+
 3. Install dependencies  
    ```
    npm install
