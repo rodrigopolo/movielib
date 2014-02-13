@@ -29,19 +29,25 @@ A Node.js/MongoDB movie library creator.
    ```
 
 3. Install dependencies  
+
    ```
    npm install
    ```
+
 4. Create a config file from the example file  
+
    ```
    cp config-example.js config.js
    ```
+
 5. Add your movie database key to the `config.js`.
 6. Add your movie folder path to the `config.js`.
 7. Run the main.js script:  
+
    ```
    node main.js
    ```
+   
 8. Enjoy!
 
 -------
