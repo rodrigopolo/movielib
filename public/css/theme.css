@@ -3,6 +3,8 @@ body {
   padding-bottom: 30px;
 }
 
+.label-elegant{background-color:#282828}
+
 .theme-dropdown .dropdown-menu {
   display: block;
   position: static;
