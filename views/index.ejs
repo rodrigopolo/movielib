@@ -221,7 +221,9 @@
     {{if bitrate_mode}}
       <span class="label label-default">${bitrate_mode}</span>
     {{/if}}
+    {{if sample_rate}}
     <span class="label label-default">{{html audiSample(sample_rate)}}</span>
+    {{/if}}
     {{if bitrate}}
       <span class="label label-default">{{html shortBits(bitrate)}}</span>
     {{/if}}
