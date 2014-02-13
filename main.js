@@ -1,13 +1,39 @@
+/**
+ * Movie lib scan dependencies
+ */
+
+// Config file
 var config = require('./config');
 
+// Mongod instance lib
 var mongod = require('./lib/mongod');
+
+// Mongose lib
+var mongoose = require('mongoose');
+
+// OS commands lib
 var oscom = require('./lib/oscom');
 
-var mongoose = require('mongoose');
+// Movie file scan lib
 var movie_scan = require('./lib/movie_scan');
 
+// Mediainfo and TMDB lib
 var mindbl = require('./lib/movie_info_db');
+
+// File system lib
 var fs = require('fs');
+
+/**
+ * Web server dependencies
+ */
+
+var express = require('express');
+//var routes = require('./routes');
+//var user = require('./routes/user');
+var http = require('http');
+var path = require('path');
+var app = express();
+
 if(fs.existsSync(config.path)){
 	mongod.check(function(err, installed){
 		if(installed){
@@ -28,6 +54,7 @@ if(fs.existsSync(config.path)){
 
 				// User model
 				models.movies = require('./models/movies')(mongoose);
+				models.tmdb_config = require('./models/tmdb_config')(mongoose);
 				
 				// movie info class
 				var movie_info_db = new mindbl({
@@ -50,10 +77,50 @@ if(fs.existsSync(config.path)){
 
 									movie_info_db.getAllSpecs(function(err){
 										movie_info_db.getAllInfo(function(err){
-											mongoose.connection.close(function(){
-													oscom.print('Provisional: Press [CTRL]-[C]');
-													//process.exit(0);
+											
+											oscom.print('Starting web server.');
+
+											// all environments
+											app.set('port', config.express.port);
+											app.set('views', path.join(__dirname, 'views'));
+											app.set('view engine', 'ejs');
+
+
+											if(config.express.behind_proxy){
+												app.set('trust proxy', true);
+											}
+
+											app.use(express.logger('dev')); //
+											app.use(express.json());
+											app.use(express.urlencoded());
+											app.use(express.methodOverride());
+											app.use(app.router);
+											app.use(express.static(path.join(__dirname, 'public')));
+
+
+											app.get('/', function(req, res){
+												res.render('index', {
+													title: 'Movie Lib',
+													host_path: req.protocol + "://" + req.get('host')
+												});
 											});
+
+
+											// json data
+											require(__dirname +'/routes/movies')(config, app, models, movie_info_db);
+
+											http.createServer(app).listen(app.get('port'), function(){
+												var running_on_port = (app.get('port')!=80)?':'+app.get('port'):'';
+												oscom.print("\nYour movie library is on http://localhost"+running_on_port+"\nYou can close the server by pressing [CTRL]+[C]\n");
+
+												if(config.auto_open){
+													oscom.open('http://localhost'+running_on_port+'/');
+												}
+
+											});
+
+
+											
 										});
 									});
 

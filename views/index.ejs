@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Movie Lib</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/theme.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="/js/html5shiv.3.7.0.js"></script>
+      <script src="/js/respond.min.1.4.2.js"></script>
+    <![endif]-->
+  </head>
+
+  <body role="document">
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Movie Lib</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+
+            <li class="dropdown" id="filter">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#all">All</a></li>
+                <li><a href="#a_eng_esp">Eng-Esp</a></li>
+                <li><a href="#s_esp">Sub Esp</a></li>
+                <li><a href="#a_5_1">5.1</a></li>
+                <li><a href="#v_sd">SD</a></li>
+                <li><a href="#v_720">720p</a></li>
+                <li><a href="#v_1080">1080p</a></li>
+              </ul>
+            </li>
+            <!--
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Genres <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Adventure</a></li>
+                <li><a href="#">Animation</a></li>
+                <li><a href="#">Comedy</a></li>
+                <li><a href="#">Crime</a></li>
+                <li><a href="#">Disaster</a></li>
+                <li><a href="#">Documentary</a></li>
+                <li><a href="#">Drama</a></li>
+                <li><a href="#">Erotic</a></li>
+                <li><a href="#">Family</a></li>
+                <li><a href="#">Fantasy</a></li>
+                <li><a href="#">Foreign</a></li>
+                <li><a href="#">History</a></li>
+                <li><a href="#">Horror</a></li>
+                <li><a href="#">Indie</a></li>
+                <li><a href="#">Music</a></li>
+                <li><a href="#">Musical</a></li>
+                <li><a href="#">Mystery</a></li>
+                <li><a href="#">Romance</a></li>
+                <li><a href="#">Science Fiction</a></li>
+                <li><a href="#">Sport</a></li>
+                <li><a href="#">Suspense</a></li>
+                <li><a href="#">Thriller</a></li>
+                <li><a href="#">War</a></li>
+                <li><a href="#">Western</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Audio Lang<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">ENG</a></li>
+                <li><a href="#">ESP</a></li>
+              </ul>
+            </li>
+            -->
+
+            <li class="dropdown" id="size_calc">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="bsel">0 bytes</span><b class="caret"></b></a>
+              <ul class="dropdown-menu" id="size_list">
+              </ul>
+            </li>
+
+            <li class="dropdown" id="selec">
+              <a href="#_" class="dropdown-toggle" data-toggle="dropdown">Selection <span id="msel">0</span><b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#a">Select all</a></li>
+                <li><a href="#n">Select none</a></li>
+                <li><a href="#i">Invert selection</a></li>
+                <li><a href="#c">Get IDs</a></li>
+              </ul>
+            </li>
+
+
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container theme-showcase" role="main">
+      <ul id="movies">
+        
+      </ul>
+
+    </div> <!-- /container -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Movie IDs!</h4>
+      </div>
+      <div class="modal-body">
+        <textarea id="alerttxt" class="form-control" rows="3"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Movie Template -->
+<script id="movieTemplate" type="text/x-jquery-tmpl">
+
+  <li class="movcan">
+
+    <div class="mth">
+        {{if poster_path}}
+          <a href="http://www.imdb.com/title/${imdb_id}" target="_blank" class="movth">
+            <img width="92" height="138" alt="${name}" src="${config.images.base_url+config.images.poster_sizes[0]}${poster_path}">
+          </a>
+        {{else}}
+          <img width="92" height="138" alt="${name}" src="img/notfound.png">
+        {{/if}}
+        <span class="trailers">
+          {{if trailers.youtube.length>0}}{{tmpl(trailers.youtube) '#youtube'}}{{/if}}{{if trailers.quicktime.length>0}}{{tmpl(trailers.quicktime) '#quicktime'}}{{/if}}
+        </span>
+        
+    </div>
+
+    <div class="mcnt">
+
+      <h4>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="i${$index}"> ${name}
+</label>
+</div>
+      </h4>
+      
+      <p>
+        <span class="label label-elegant" title="Size">{{html shortBytes(size)}}</span>
+        {{if release_date}}
+          <span class="label label-default" title="Release">{{html releaseDate(release_date)}}</span>
+        {{/if}}
+        <span class="label label-default" title="Length">{{html secToTime(duration)}}</span>
+        {{if vote_average}}
+          <span class="label label-default" title="Rating">${vote_average} <span class="glyphicon glyphicon-star"></span></span>
+        {{/if}}
+        {{if has_chapters}}
+          <span class="label label-default" title="Has Menu"><span class="glyphicon glyphicon-list-alt"></span></span>
+        {{/if}}
+        <span class="label label-default" title="Bitrate">{{html shortBits(bitrate)}}</span>
+      </p>
+
+      {{tmpl(video_tracks) '#video_tracks_tmpl'}}
+
+      {{tmpl(audio_tracks) '#audio_tracks_tmpl'}}
+
+      {{if subtitles.length>0}}
+        <p>{{tmpl(subtitles) '#subs_tracks_tmpl'}}</p>
+      {{/if}}
+
+    </div>
+
+  </li>
+</script>
+
+<!-- Video Tracks Template -->
+<script id="video_tracks_tmpl" type="text/x-jquery-tmpl">
+  <p>
+    <span class="label label-elegant">{{html videoRes(width,height)}}</span>
+    <span class="label label-default">{{html videoCodec(codec)}}</span>
+    <span class="label label-default">${profile}</span>
+    <span class="label label-default">${aspect}</span>
+    <span class="label label-default">${fps}</span>
+    {{if video_bitrate}}
+      <span class="label label-default">{{html shortBits(video_bitrate)}}</span>
+    {{/if}}
+  </p>
+</script>
+
+<!-- Audio Tracks Template -->
+<script id="audio_tracks_tmpl" type="text/x-jquery-tmpl">
+  <p>
+    {{if lang}}
+      <span class="label label-elegant"><span class="glyphicon glyphicon-volume-up"></span> {{html lang.toUpperCase()}}</span>
+    {{else}}
+      <span class="label label-default"><span class="glyphicon glyphicon-volume-up"></span></span> 
+    {{/if}}
+    <span class="label label-default">{{html audioCodec(codec)}}</span>
+    <span class="label label-default">{{html audioChan(channels)}}</span>
+    {{if bitrate_mode}}
+      <span class="label label-default">${bitrate_mode}</span>
+    {{/if}}
+    <span class="label label-default">{{html audiSample(sample_rate)}}</span>
+    {{if bitrate}}
+      <span class="label label-default">{{html shortBits(bitrate)}}</span>
+    {{/if}}
+  </p>
+</script>
+
+<!-- Subs Template -->
+<script id="subs_tracks_tmpl" type="text/x-jquery-tmpl">
+  <span class="label label-elegant"><span class="glyphicon glyphicon-subtitles"></span> ${$data.toUpperCase()}</span>&nbsp;
+</script>
+
+<!-- YouTube Trailers Template -->
+<script id="youtube" type="text/x-jquery-tmpl">
+<span class="btn-group"><a href="http://youtu.be/${source}" target="_blank" title="${name}"><span class="label label-danger"><span class="glyphicon glyphicon-facetime-video"></span></span></a></span>&nbsp;
+</script>
+
+<!-- QuickTime Trailer Template -->
+<script id="quicktime_movie" type="text/x-jquery-tmpl">
+<li><a href="${source}" target="_blank">${size}</a></li>
+</script>
+
+<!-- QuickTime Trailers Menu Template -->
+<script id="quicktime" type="text/x-jquery-tmpl">
+<span class="btn-group"  title="${name}"><span class="label label-info dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-facetime-video"></span></span><ul class="dropdown-menu" role="menu">{{tmpl(sources) '#quicktime_movie'}}</ul></span>&nbsp;
+</script>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/moment.min.js"></script>
+    <script src="/js/jquery.tmpl.js"></script>
+    <script>
+      var host_path = '<%=host_path%>';
+    </script>
+    <script src="/js/main.js"></script>
+  </body>
+</html>
