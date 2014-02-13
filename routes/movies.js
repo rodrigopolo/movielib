@@ -37,9 +37,6 @@ module.exports = function(config, app, models, movie_info_db) {
 
 	app.get('/movies/:action?', function(req, res, next) {
 
-		console.log('req.params.action');
-		console.log(req.params.action);
-
 		var query = {};
 
 		if(req.params.action=='a_eng_esp'){
