@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "mongoose": "~3.8.6",
-    "mimovie": "0.1.5",
+    "mimovie": "0.1.7",
     "moviedb": "~0.1.1",
     "express": "3.4.8",
     "ejs": "*"

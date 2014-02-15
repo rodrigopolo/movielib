@@ -44,7 +44,7 @@ module.exports = function(config, app, models, movie_info_db) {
 		}else if(req.params.action=='s_esp'){
 			query['subtitles'] = 'es';
 		}else if(req.params.action=='a_5_1'){
-			query['audio_tracks'] = {$elemMatch: {channels: 6}};
+			query['audio_tracks'] = {$elemMatch: {ch: 6}};
 		}else if(req.params.action=='v_sd'){
 			query['video_tracks'] = {$elemMatch: {width: {"$lt": 960},codec:{$ne: "JPEG"}}};
 		}else if(req.params.action=='v_720'){
@@ -79,6 +79,7 @@ module.exports = function(config, app, models, movie_info_db) {
 			md_status: 0,
 			cast: 0,
 			crew: 0,
+			genres: 0,
 			tagline: 0,
 			overview: 0,
 			backdrop_path: 0,
@@ -100,7 +101,7 @@ module.exports = function(config, app, models, movie_info_db) {
 			poster_path:		1,
 			vote_average:		1,
 			trailers:			1,
-			has_chapters:		1
+			menu:				1
 		}*/
 
 		models.movies.find(query)

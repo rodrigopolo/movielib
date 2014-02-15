@@ -175,7 +175,7 @@
         {{if vote_average}}
           <span class="label label-default" title="Rating">${vote_average} <span class="glyphicon glyphicon-star"></span></span>
         {{/if}}
-        {{if has_chapters}}
+        {{if menu}}
           <span class="label label-default" title="Has Menu"><span class="glyphicon glyphicon-list-alt"></span></span>
         {{/if}}
         <span class="label label-default" title="Bitrate">{{html shortBits(bitrate)}}</span>
@@ -185,7 +185,7 @@
 
       {{tmpl(audio_tracks) '#audio_tracks_tmpl'}}
 
-      {{if subtitles.length>0}}
+      {{if subtitles}}
         <p>{{tmpl(subtitles) '#subs_tracks_tmpl'}}</p>
       {{/if}}
 
@@ -202,8 +202,8 @@
     <span class="label label-default">${profile}</span>
     <span class="label label-default">${aspect}</span>
     <span class="label label-default">${fps}</span>
-    {{if video_bitrate}}
-      <span class="label label-default">{{html shortBits(video_bitrate)}}</span>
+    {{if bitrate}}
+      <span class="label label-default">{{html shortBits(bitrate)}}</span>
     {{/if}}
   </p>
 </script>
@@ -217,7 +217,7 @@
       <span class="label label-default"><span class="glyphicon glyphicon-volume-up"></span></span> 
     {{/if}}
     <span class="label label-default">{{html audioCodec(codec)}}</span>
-    <span class="label label-default">{{html audioChan(channels)}}</span>
+    <span class="label label-default">{{html audioChan(ch)}}</span>
     {{if bitrate_mode}}
       <span class="label label-default">${bitrate_mode}</span>
     {{/if}}

@@ -12,22 +12,22 @@ db.movies.find({
 
 // Audio ES stereo
 db.movies.find({
-    audio_tracks:{$elemMatch: {lang: 'es', channels: 2}}
+    audio_tracks:{$elemMatch: {lang: 'es', ch: 2}}
 }).forEach(function(i){
 	print(i.name);
 	i.audio_tracks.forEach(function(j){
-            print(j.lang+': '+j.channels);
+            print(j.lang+': '+j.ch);
 	});
 	print("");
 })
 
 // Audio ES 5.1
 db.movies.find({
-    audio_tracks:{$elemMatch: {lang: 'es', channels: 6}}
+    audio_tracks:{$elemMatch: {lang: 'es', ch: 6}}
 }).forEach(function(i){
 	print(i.name);
 	i.audio_tracks.forEach(function(j){
-            print(j.lang+': '+j.channels);
+            print(j.lang+': '+j.ch);
 	});
 	print("");
 })
@@ -35,12 +35,12 @@ db.movies.find({
 
 // Audio stereo and 5.1
 db.movies.find({
-    $and:[{audio_tracks:{$elemMatch: {channels: 2}}},{audio_tracks:{$elemMatch: {channels: 6}}}]
+    $and:[{audio_tracks:{$elemMatch: {ch: 2}}},{audio_tracks:{$elemMatch: {ch: 6}}}]
     
 }).forEach(function(i){
 	print(i.name);
 	i.audio_tracks.forEach(function(j){
-            print(j.lang+': '+j.channels);
+            print(j.lang+': '+j.ch);
 	});
 	print("");
 })
@@ -52,7 +52,7 @@ db.movies.find({
 }).forEach(function(i){
 	print(i.name);
 	i.audio_tracks.forEach(function(j){
-            print(j.lang+': '+j.channels);
+            print(j.lang+': '+j.ch);
 	});
 	print("");
 })
