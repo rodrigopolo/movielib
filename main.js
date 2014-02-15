@@ -34,6 +34,14 @@ var http = require('http');
 var path = require('path');
 var app = express();
 
+// fixing the path
+config.path = config.path.replace(/\\/g, '/');
+if(config.path.substr(-1)=='/'){
+	config.path = config.path.substr(0,config.path.length-1);
+}
+
+console.log(config.path);
+
 if(fs.existsSync(config.path)){
 	mongod.check(function(err, installed){
 		if(installed){
