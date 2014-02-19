@@ -53,12 +53,8 @@ var template = Handlebars.compile($("#mt_movieTemplate").html());
 			movie_data = data;
 			data = null;
 
-			//$("#movieTemplate").tmpl(movie_data).appendTo("#movies");
-
-			//$('#movies').mustache('mt_movieTemplate', movie_data);
-
+			// render
 			$('#movies').html(template(movie_data));
-
 
 			$( "#movies input[type='checkbox']" ).change(function() {
 				calc_total();
@@ -152,6 +148,25 @@ var template = Handlebars.compile($("#mt_movieTemplate").html());
 	  }
 	});
 
+
+
+
+	function filterMovies(filter){
+			apicom({
+				action: 'movies',
+				filter: filter
+			}, function(data){
+				movie_data = data;
+				data = null;
+
+				$('#movies').html(template(movie_data));
+
+				$( "#movies input[type='checkbox']" ).change(function() {
+					calc_total();
+				});
+
+			});
+	}
 
 
 
@@ -320,25 +335,6 @@ function calc_total(){
 }
 
 
-function filterMovies(filter){
-		apicom({
-			action: 'movies',
-			filter: filter
-		}, function(data){
-			movie_data = data.movies;
-			json_data = null;
-
-			$('#movies').html('');
-
-			$("#movieTemplate").tmpl(movie_data.movies).appendTo("#movies");
-
-
-			$( "#movies input[type='checkbox']" ).change(function() {
-				calc_total();
-			});
-
-		});
-}
 
 
 
