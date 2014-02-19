@@ -31,9 +31,13 @@ function apicom(op, done){
 	});
 }
 
+var x;
 
 
 $(function(){
+
+
+var template = Handlebars.compile($("#mt_movieTemplate").html());
 
 
 	apicom({
@@ -46,10 +50,14 @@ $(function(){
 		apicom({
 			action: 'movies'
 		}, function(data){
-			movie_data = data.movies;
-			json_data = null;
+			movie_data = data;
+			data = null;
 
-			$("#movieTemplate").tmpl(movie_data).appendTo("#movies");
+			//$("#movieTemplate").tmpl(movie_data).appendTo("#movies");
+
+			//$('#movies').mustache('mt_movieTemplate', movie_data);
+
+			$('#movies').html(template(movie_data));
 
 
 			$( "#movies input[type='checkbox']" ).change(function() {
@@ -100,7 +108,7 @@ $(function(){
 			var selids=[];
 			$("#movies input[type='checkbox']").each(function() {
 				if(this.checked){		
-					var mit = movie_data[$(this).attr('name').substr(1)];
+					var mit = movie_data.movies[$(this).attr('name').substr(1)];
 					selids.push(mit._id);
 				}
 			});
@@ -124,18 +132,31 @@ $(function(){
 	});
 
 
+
+	var films = new Bloodhound({
+	  datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.value); },
+	  queryTokenizer: Bloodhound.tokenizers.whitespace,
+	  remote: '/search/%QUERY.json'
+	  //,prefetch: '../data/films/post_1960.json'
+	});
+	 
+	films.initialize();
+	 
+	$('.typeahead').typeahead(null, {
+	  displayKey: 'value',
+	  source: films.ttAdapter(),
+	  templates: {
+	    suggestion: Handlebars.compile(
+	      '<p><strong>{{value}}</strong> ({{year}})</p>'
+	    )
+	  }
+	});
+
+
+
+
 });
 
-
-
-
-
-/*
-$.ajax({
-  url: "config.json"
-}).done(function(json_data) {
-  console.log(json_data);
-});*/
 
 
 function shortBytes(bytes) {
@@ -185,9 +206,11 @@ function audiSample(sr){
 }
 
 function audioCodec(codec){
-	if(codec=='AC-3'){
+	if(codec=='AC3'){
 		return 'Dolby';
-	}else if(codec=='MPEG Audio'){
+	}else if(codec=='AAC LC'){
+		return 'AAC';
+	}else if(codec=='MPA1L3'){
 		return 'MP3';
 	}else{
 		return codec;
@@ -205,6 +228,14 @@ function videoCodec(codec){
 		return 'MP4';
 	}else{
 		return codec;
+	}
+}
+
+function videoProfile(prof){
+	if(prof=='Advanced Simple@L5'){
+		return 'AS@5';
+	}else{
+		return prof;
 	}
 }
 
@@ -273,7 +304,7 @@ function calc_total(){
 	var totsel =0;
 	$("#movies input[type='checkbox']").each(function() {
 		if(this.checked){		
-			var mit = movie_data[$(this).attr('name').substr(1)];
+			var mit = movie_data.movies[$(this).attr('name').substr(1)];
 			totsel++;
 			total_bytes+=mit.size;
 		}
@@ -299,7 +330,7 @@ function filterMovies(filter){
 
 			$('#movies').html('');
 
-			$("#movieTemplate").tmpl(movie_data).appendTo("#movies");
+			$("#movieTemplate").tmpl(movie_data.movies).appendTo("#movies");
 
 
 			$( "#movies input[type='checkbox']" ).change(function() {
@@ -308,3 +339,54 @@ function filterMovies(filter){
 
 		});
 }
+
+
+
+Handlebars.registerHelper('poster_url', function(block) {
+	return config.images.base_url+config.images.poster_sizes[0]+block;
+});
+
+Handlebars.registerHelper('shortBytes', function(block) {
+	return shortBytes(block);
+});
+
+Handlebars.registerHelper('releaseDate', function(block) {
+	return releaseDate(block);
+});
+
+Handlebars.registerHelper('secToTime', function(block) {
+	return secToTime(block);
+});
+
+Handlebars.registerHelper('shortBits', function(block) {
+	return shortBits(block);
+});
+
+Handlebars.registerHelper('videoCodec', function(block) {
+	return videoCodec(block);
+});
+
+Handlebars.registerHelper('videoProfile', function(block) {
+	return videoProfile(block);
+});
+
+Handlebars.registerHelper('videoRes', function(w,h) {
+	return videoRes(w,h);
+});
+
+Handlebars.registerHelper('upper', function(block) {
+	return block.toUpperCase();
+});
+
+Handlebars.registerHelper('audioCodec', function(block) {
+	return audioCodec(block);
+});
+
+Handlebars.registerHelper('audioChan', function(block) {
+	return audioChan(block);
+});
+
+Handlebars.registerHelper('audiSample', function(block) {
+	return audiSample(block);
+});
+

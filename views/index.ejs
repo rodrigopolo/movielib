@@ -10,7 +10,7 @@
     <title>Movie Lib</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.jsdelivr.net/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="/css/theme.css" rel="stylesheet">
@@ -18,7 +18,7 @@
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="//cdn.jsdelivr.net/html5shiv/3.7.0/html5shiv.min.js"></script>
-      <script src="/js/respond.min.1.4.2.js"></script>
+      <script src="//cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
 
@@ -26,7 +26,7 @@
 
     <!-- Fixed navbar -->
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
+      <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -51,6 +51,7 @@
                 <li><a href="#v_1080">1080p</a></li>
               </ul>
             </li>
+
             <!--
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Genres <b class="caret"></b></a>
@@ -97,6 +98,14 @@
               </ul>
             </li>
 
+
+
+
+          </ul>
+
+
+          <ul class="nav navbar-nav navbar-right">
+            <!-- <li><a href="#">Link</a></li> -->
             <li class="dropdown" id="selec">
               <a href="#_" class="dropdown-toggle" data-toggle="dropdown">Selection <span id="msel">0</span><b class="caret"></b></a>
               <ul class="dropdown-menu">
@@ -106,9 +115,12 @@
                 <li><a href="#c">Get IDs</a></li>
               </ul>
             </li>
-
-
           </ul>
+
+          <form class="navbar-form navbar-right" role="search">
+              <input type="text" autocomplete="off" class="form-control typeahead" placeholder="Search">
+          </form>
+
         </div><!--/.nav-collapse -->
       </div>
     </div>
@@ -137,126 +149,100 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<!-- Movie Template -->
-<script id="movieTemplate" type="text/x-jquery-tmpl">
+<!-- Handlebars/Mustache Movie template -->
+<script id="mt_movieTemplate" type="text/html">
+  {{#movies}}
+    <li class="movcan">
 
-  <li class="movcan">
+      <div class="mth">
+          {{#if poster_path}}
+            <a href="http://www.imdb.com/title/{{imdb_id}}" target="_blank" class="movth">
+              <img width="92" height="138" alt="${name}" src="{{poster_url poster_path}}">
+            </a>
+          {{else}}
+            <img width="92" height="138" alt="{{name}}" src="img/notfound.png">
+          {{/if}}
+          
+          <span class="trailers">
+            {{#trailers.youtube}}<span class="btn-group"><a href="http://youtu.be/{{source}}" target="_blank" title="{{name}}"><span class="label label-danger"><span class="glyphicon glyphicon-facetime-video"></span></span></a></span> {{/trailers.youtube}}{{#trailers.quicktime}}<span class="btn-group"  title="{{name}}"><span class="label label-info dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-facetime-video"></span></span><ul class="dropdown-menu" role="menu">{{#sources}}<li><a href="{{source}}" target="_blank">{{size}}</a></li>{{/sources}}</ul></span> {{/trailers.quicktime}}
+          </span>
+      </div>
 
-    <div class="mth">
-        {{if poster_path}}
-          <a href="http://www.imdb.com/title/${imdb_id}" target="_blank" class="movth">
-            <img width="92" height="138" alt="${name}" src="${config.images.base_url+config.images.poster_sizes[0]}${poster_path}">
-          </a>
-        {{else}}
-          <img width="92" height="138" alt="${name}" src="img/notfound.png">
-        {{/if}}
-        <span class="trailers">
-          {{if trailers.youtube.length>0}}{{tmpl(trailers.youtube) '#youtube'}}{{/if}}{{if trailers.quicktime.length>0}}{{tmpl(trailers.quicktime) '#quicktime'}}{{/if}}
-        </span>
+      <div class="mcnt">
+
+        <h4>
+          <div class="checkbox">
+          <label>
+          <input type="checkbox" name="i{{@index}}"> {{name}}
+          </label>
+          </div>
+        </h4>
         
-    </div>
-
-    <div class="mcnt">
-
-      <h4>
-<div class="checkbox">
-<label>
-<input type="checkbox" name="i${$index}"> ${name}
-</label>
-</div>
-      </h4>
-      
-      <p>
-        <span class="label label-elegant" title="Size">{{html shortBytes(size)}}</span>
-        {{if release_date}}
-          <span class="label label-default" title="Release">{{html releaseDate(release_date)}}</span>
-        {{/if}}
-        <span class="label label-default" title="Length">{{html secToTime(duration)}}</span>
-        {{if vote_average}}
-          <span class="label label-default" title="Rating">${vote_average} <span class="glyphicon glyphicon-star"></span></span>
-        {{/if}}
-        {{if menu}}
+        <p>
+          <span class="label label-elegant" title="Size">{{shortBytes size}}</span>
+          {{#if release_date}}
+          <span class="label label-default" title="Release">{{releaseDate release_date}}</span>
+          {{/if}}
+          <span class="label label-default" title="Length">{{secToTime duration}}</span>
+          {{#if vote_average}}
+          <span class="label label-default" title="Rating">{{vote_average}} <span class="glyphicon glyphicon-star"></span></span>
+          {{/if}}
+          {{#if menu}}
           <span class="label label-default" title="Has Menu"><span class="glyphicon glyphicon-list-alt"></span></span>
+          {{/if}}
+          <span class="label label-default" title="Bitrate">{{shortBits bitrate}}</span>
+        </p>
+
+        {{#video_tracks}}
+        <p>
+          <span class="label label-elegant">{{videoRes width height}}</span> 
+          <span class="label label-default">{{videoCodec codec}}</span>
+          <span class="label label-default">{{videoProfile profile}}</span>
+          <span class="label label-default">{{aspect}}</span>
+          <span class="label label-default">{{fps}}</span>
+          {{#if bitrate}}
+            <span class="label label-default">{{shortBits bitrate}}</span>
+          {{/if}}
+        </p>
+        {{/video_tracks}}
+
+        {{#audio_tracks}}
+        <p>
+          {{#if lang}}
+            <span class="label label-elegant"><span class="glyphicon glyphicon-volume-up"></span>{{upper lang}}</span>
+          {{else}}
+            <span class="label label-default"><span class="glyphicon glyphicon-volume-up"></span></span> 
+          {{/if}}
+          <span class="label label-default">{{audioCodec codec}}</span>
+          <span class="label label-default">{{audioChan ch}}</span>
+          {{#if bitrate_mode}}
+            <span class="label label-default">{{bitrate_mode}}</span>
+          {{/if}}
+          {{#if sample_rate}}
+          <span class="label label-default">{{audiSample sample_rate}}</span>
+          {{/if}}
+          {{#if bitrate}}
+            <span class="label label-default">{{shortBits bitrate}}</span>
+          {{/if}}
+        </p>
+        {{/audio_tracks}}
+
+        {{#if subtitles}}
+        <p>{{#each subtitles}}<span class="label label-elegant"><span class="glyphicon glyphicon-subtitles"></span> {{upper this}}</span> {{/each}}</p>
         {{/if}}
-        <span class="label label-default" title="Bitrate">{{html shortBits(bitrate)}}</span>
-      </p>
 
-      {{tmpl(video_tracks) '#video_tracks_tmpl'}}
-
-      {{tmpl(audio_tracks) '#audio_tracks_tmpl'}}
-
-      {{if subtitles}}
-        <p>{{tmpl(subtitles) '#subs_tracks_tmpl'}}</p>
-      {{/if}}
-
-    </div>
-
-  </li>
+      </div>
+    </li>
+  {{/movies}}
 </script>
 
-<!-- Video Tracks Template -->
-<script id="video_tracks_tmpl" type="text/x-jquery-tmpl">
-  <p>
-    <span class="label label-elegant">{{html videoRes(width,height)}}</span>
-    <span class="label label-default">{{html videoCodec(codec)}}</span>
-    <span class="label label-default">${profile}</span>
-    <span class="label label-default">${aspect}</span>
-    <span class="label label-default">${fps}</span>
-    {{if bitrate}}
-      <span class="label label-default">{{html shortBits(bitrate)}}</span>
-    {{/if}}
-  </p>
-</script>
 
-<!-- Audio Tracks Template -->
-<script id="audio_tracks_tmpl" type="text/x-jquery-tmpl">
-  <p>
-    {{if lang}}
-      <span class="label label-elegant"><span class="glyphicon glyphicon-volume-up"></span> {{html lang.toUpperCase()}}</span>
-    {{else}}
-      <span class="label label-default"><span class="glyphicon glyphicon-volume-up"></span></span> 
-    {{/if}}
-    <span class="label label-default">{{html audioCodec(codec)}}</span>
-    <span class="label label-default">{{html audioChan(ch)}}</span>
-    {{if bitrate_mode}}
-      <span class="label label-default">${bitrate_mode}</span>
-    {{/if}}
-    {{if sample_rate}}
-    <span class="label label-default">{{html audiSample(sample_rate)}}</span>
-    {{/if}}
-    {{if bitrate}}
-      <span class="label label-default">{{html shortBits(bitrate)}}</span>
-    {{/if}}
-  </p>
-</script>
-
-<!-- Subs Template -->
-<script id="subs_tracks_tmpl" type="text/x-jquery-tmpl">
-  <span class="label label-elegant"><span class="glyphicon glyphicon-subtitles"></span> ${$data.toUpperCase()}</span>&nbsp;
-</script>
-
-<!-- YouTube Trailers Template -->
-<script id="youtube" type="text/x-jquery-tmpl">
-<span class="btn-group"><a href="http://youtu.be/${source}" target="_blank" title="${name}"><span class="label label-danger"><span class="glyphicon glyphicon-facetime-video"></span></span></a></span>&nbsp;
-</script>
-
-<!-- QuickTime Trailer Template -->
-<script id="quicktime_movie" type="text/x-jquery-tmpl">
-<li><a href="${source}" target="_blank">${size}</a></li>
-</script>
-
-<!-- QuickTime Trailers Menu Template -->
-<script id="quicktime" type="text/x-jquery-tmpl">
-<span class="btn-group"  title="${name}"><span class="label label-info dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-facetime-video"></span></span><ul class="dropdown-menu" role="menu">{{tmpl(sources) '#quicktime_movie'}}</ul></span>&nbsp;
-</script>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- CDN JS -->
     <script src="//cdn.jsdelivr.net/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
-    <script src="/js/jquery.tmpl.js"></script>
+    <script src="//cdn.jsdelivr.net/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdn.jsdelivr.net/momentjs/2.5.1/moment.min.js"></script>
+    <script src="//cdn.jsdelivr.net/handlebarsjs/1.3.0/handlebars.min.js"></script>
+    <script src="//cdn.jsdelivr.net/typeahead.js/0.10.1/typeahead.bundle.js"></script>
     <script>
       var host_path = '<%=host_path%>';
     </script>

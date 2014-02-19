@@ -4,6 +4,28 @@ module.exports = function(mongoose) {
 	//var ObjectId = Schema.ObjectId;
 
 	var schema = new Schema({
+
+		added: {
+			type: Date, 
+			default: Date.now 
+		},
+		encoded: {
+			type: Date, 
+			default: Date.now 
+		},
+		tagged: {
+			type: Date, 
+			default: Date.now 
+		},
+		created: {
+			type: Date, 
+			default: Date.now 
+		},
+		modified: {
+			type: Date, 
+			default: Date.now 
+		},
+
 		path: { 
 			type:		String, 
 			unique:		true,
