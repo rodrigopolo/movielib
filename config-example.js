@@ -6,7 +6,7 @@ config.only_web_server = false;
 config.auto_open = true;
 config.mongodb = {
 	host: 'localhost',
-	db:   'movies',
+	db:   'movielib',
 	port: 27018
 }
 config.express={
