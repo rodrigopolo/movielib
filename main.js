@@ -1,5 +1,5 @@
 // future params
-var only_web_server = true;
+var only_web_server = false;
 
 /**
  * Movie lib scan dependencies
