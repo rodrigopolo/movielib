@@ -90,7 +90,7 @@ body {
 }
 
 .tt-dropdown-menu {
-  width: 270px;
+  width: 350px;
   margin-top: 0;
   padding: 8px 0;
   background-color: #fff;
@@ -106,7 +106,7 @@ body {
 
 .tt-suggestion {
   padding: 3px 14px;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .tt-suggestion.tt-cursor {
@@ -122,4 +122,8 @@ body {
 .gist {
   font-size: 14px;
   color: #f00;
+}
+
+.twitter-typeahead{
+  width: 100%;
 }

@@ -2,7 +2,7 @@
 
 module.exports = function(config, app, models, movie_info_db){
 
-	app.get('/config', function(req, res, next){
+	app.post('/config', function(req, res, next){
 		movie_info_db.tmdb_config(function(err,conf){
 			if(err){
 				res.json({
@@ -20,6 +20,31 @@ module.exports = function(config, app, models, movie_info_db){
 
 			}
 		});
+	});
+
+	app.post('/movies', function(req, res, next){
+
+		//console.log(req.body);
+
+		var sort={};
+		if(req.body.sort_by && req.body.sort_order){
+			sort[req.body.sort_by] = req.body.sort_order;
+		}
+
+
+		findMovies({},sort,function(err, movies){
+			if(err){
+				res.json({
+					err: err
+				});
+			}else{
+				res.json({
+					result: 'ok',
+					movies: movies
+				});
+			}
+		});
+
 	});
 
 	app.get('/search/:query', function(req, res, next){
@@ -104,22 +129,7 @@ module.exports = function(config, app, models, movie_info_db){
 		});	
 	});
 
-	app.get('/movies', function(req, res, next){
 
-		findMovies({},function(err, movies){
-			if(err){
-				res.json({
-					err: err
-				});
-			}else{
-				res.json({
-					result: 'ok',
-					movies: movies
-				});
-			}
-		});
-
-	});
 
 	app.get('/filter', function(req, res, next){
 
@@ -148,39 +158,7 @@ module.exports = function(config, app, models, movie_info_db){
 
 
 
-	app.get('/movies/:action?', function(req, res, next){
 
-		var query = {};
-
-		if(req.params.action=='a_eng_esp'){
-			query['$and'] = [{audio_tracks:{$elemMatch: {lang: 'en'}}},{audio_tracks:{$elemMatch: {lang: 'es'}}}];
-		}else if(req.params.action=='s_esp'){
-			query['subtitles'] = 'es';
-		}else if(req.params.action=='a_5_1'){
-			query['audio_tracks'] = {$elemMatch: {ch: 6}};
-		}else if(req.params.action=='v_sd'){
-			query['video_tracks'] = {$elemMatch: {width: {"$lt": 960},codec:{$ne: "JPEG"}}};
-		}else if(req.params.action=='v_720'){
-			query['video_tracks'] = {$elemMatch: {width: {"$gte": 960, "$lte": 1280},codec:{$ne: "JPEG"}}};
-		}else if(req.params.action=='v_1080'){
-			query['video_tracks'] = {$elemMatch: {width: {"$gt": 1280, "$lte": 1920},codec:{$ne: "JPEG"}}};
-		}
-
-		findMovies(query,function(err, movies){
-			if(err){
-				res.json({
-					err: err
-				});
-				console.log(err);
-			}else{
-				res.json({
-					result: 'ok',
-					movies: movies
-				});
-			}
-		});
-
-	});
 
 
 	function getYear(title){
@@ -196,7 +174,7 @@ module.exports = function(config, app, models, movie_info_db){
 		return false;
 	}
 
-	function findMovies(query, done){
+	function findMovies(query, sort, done){
 
 		var selec = {
 			id: 0,
@@ -231,7 +209,7 @@ module.exports = function(config, app, models, movie_info_db){
 		}*/
 
 		models.movies.find(query)
-		.sort({ modified: -1 })
+		.sort(sort)
 		.select(selec)
 		.exec(function(err,r){
 			if(err){

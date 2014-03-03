@@ -5,18 +5,15 @@ var movie_data;
 var total_bytes = 0;
 
 
-function apicom(op, done){
-	var action = host_path+'/'+op.action;
-	if(op.filter){
-		action+='/'+op.filter
-	}
+function apicom(action, op, done){
+	var url = host_path+'/'+action;
+
 	$.ajax({
-		type: 'GET', // POST
-		url: action,
-		//data: JSON.stringify(op),
-		//data: op,
-		//contentType: 'application/json; charset=utf-8',
-		//dataType: 'json',
+		type: 'POST', // POST
+		url: url,
+		data: JSON.stringify(op),
+		contentType: 'application/json; charset=utf-8',
+		dataType: 'json',
 		success: function(json_data){
 			if(json_data.result=='ok'){
 				done(json_data);
@@ -37,35 +34,18 @@ var x;
 $(function(){
 
 
+
+
+
 	// Load Handle Bars
 	var template = Handlebars.compile($("#mt_movieTemplate").html());
 
-	// request config
-	apicom({
-		action: 'config'
-	},function(conf_data){
-		
+	// Request config
+	apicom('config',{},function(conf_data){
 		config = conf_data.config;
-
 		popForm(conf_data.specs);
-
 		conf_data = null;
-
-		// load movies
-		apicom({
-			action: 'movies'
-		}, function(data){
-			movie_data = data;
-			data = null;
-
-			// render
-			$('#movies').html(template(movie_data));
-
-			$( "#movies input[type='checkbox']" ).change(function() {
-				calc_total();
-			});
-
-		});
+		loadMovies();
 	});
 
 
@@ -127,50 +107,37 @@ $(function(){
 		}
 	});
 
-	// Drop down "Show only"
-	$('#filter a').click(function(e){
+	// Global loader movies options	
+	var mvOps = {
+		sort_by: 'release_date',
+		sort_order: -1
+	};
+
+	// Sort By...
+	$('#sort a').click(function(e){
 		e.preventDefault();
 		var ac = $(this).attr('href').substr(1);
-		if(ac.length>0){
-			filterMovies(ac);
+		if(ac){
+			if(ac==mvOps.sort_by){
+				mvOps.sort_order = mvOps.sort_order * -1;
+			}else{
+				mvOps.sort_by = ac;
+			}
+			loadMovies();
 		}
 	});
 
 
-	// Auto-complete search field
-	var films = new Bloodhound({
-		datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.value); },
-		queryTokenizer: Bloodhound.tokenizers.whitespace,
-		// remote: '/search/%QUERY',
-		prefetch: '/typeahead'
-	});
-
-	films.initialize();
-
-	// Init typeahead
-	$('.typeahead').typeahead(null, {
-		displayKey: 'value',
-		source: films.ttAdapter(),
-		templates: {
-			suggestion: Handlebars.compile('<p><span class="label label-elegant">{{videoRes width height}}</span> <strong>{{value}}</strong> ({{year}})</p>')
-		}
-	});
-
-	// provisional filter
-	function filterMovies(filter){
-		apicom({
-			action: 'movies',
-			filter: filter
-		}, function(data){
+	// Load movies
+	function loadMovies(){
+		apicom('movies', mvOps, function(data){
 			movie_data = data;
 			data = null;
-
+			// render
 			$('#movies').html(template(movie_data));
-
 			$( "#movies input[type='checkbox']" ).change(function() {
 				calc_total();
 			});
-
 		});
 	}
 
@@ -412,4 +379,28 @@ Handlebars.registerHelper('audiSample', function(block) {
 function popForm(fdata){
 	var t1 = Handlebars.compile($("#filter_form").html());
 	$('#f_filter').html(t1(fdata));
+
+
+	// Auto-complete search field
+	var films = new Bloodhound({
+		datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.value); },
+		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		// remote: '/search/%QUERY',
+		prefetch: '/typeahead'
+	});
+
+	films.initialize();
+
+	// Init typeahead
+	$('.typeahead').typeahead(null, {
+		displayKey: 'value',
+		source: films.ttAdapter(),
+		templates: {
+			suggestion: Handlebars.compile('<p>{{value}} ({{year}}) <span class="label label-elegant">{{videoRes width height}}</span></p>')
+		}
+	});
+
+
+
+
 }

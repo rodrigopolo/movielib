@@ -1,6 +1,3 @@
-// future params
-var only_web_server = false;
-
 /**
  * Movie lib scan dependencies
  */
@@ -68,9 +65,9 @@ mongod.check(function(err, installed){
 			if(fs.existsSync(config.path)){
 
 				// only start as a web server without scanning
-				if(only_web_server){
+				if(config.only_web_server){
 					// Express server
-					require(__dirname +'/lib/express')(config, oscom, models, movie_info_db);
+					require(__dirname +'/express/express')(config, oscom, models, movie_info_db);
 				}else{
 					movie_info_db.mediainfoCheck(function(err, mi_installed){
 						if(mi_installed){
@@ -88,7 +85,7 @@ mongod.check(function(err, installed){
 											movie_info_db.getAllInfo(function(err){
 
 												// Express server
-												require(__dirname +'/lib/express')(config, oscom, models, movie_info_db);
+												require(__dirname +'/express/express')(config, oscom, models, movie_info_db);
 												
 											});
 										});

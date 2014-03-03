@@ -39,58 +39,20 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 
-            <li class="dropdown" id="filter">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a>
+            <li class="dropdown" id="sort">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sort <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="#all">All</a></li>
-                <li><a href="#a_eng_esp">Eng-Esp</a></li>
-                <li><a href="#s_esp">Sub Esp</a></li>
-                <li><a href="#a_5_1">5.1</a></li>
-                <li><a href="#v_sd">SD</a></li>
-                <li><a href="#v_720">720p</a></li>
-                <li><a href="#v_1080">1080p</a></li>
+                <li><a href="#release_date">Release Date</a></li>
+                <li><a href="#modified">Date Modified</a></li>
+                <li><a href="#encoded">Date Encoded</a></li>
+                <li><a href="#added">Date Added</a></li>
+                <li><a href="#tagged">Date Tagged</a></li>
+                <li><a href="#created">Date Created</a></li>
+                <li><a href="#duration">Duration</a></li>
+                <li><a href="#size">Size</a></li>
+                <li><a href="#vote_average">Votes</a></li>
               </ul>
             </li>
-
-            <!--
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Genres <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Adventure</a></li>
-                <li><a href="#">Animation</a></li>
-                <li><a href="#">Comedy</a></li>
-                <li><a href="#">Crime</a></li>
-                <li><a href="#">Disaster</a></li>
-                <li><a href="#">Documentary</a></li>
-                <li><a href="#">Drama</a></li>
-                <li><a href="#">Erotic</a></li>
-                <li><a href="#">Family</a></li>
-                <li><a href="#">Fantasy</a></li>
-                <li><a href="#">Foreign</a></li>
-                <li><a href="#">History</a></li>
-                <li><a href="#">Horror</a></li>
-                <li><a href="#">Indie</a></li>
-                <li><a href="#">Music</a></li>
-                <li><a href="#">Musical</a></li>
-                <li><a href="#">Mystery</a></li>
-                <li><a href="#">Romance</a></li>
-                <li><a href="#">Science Fiction</a></li>
-                <li><a href="#">Sport</a></li>
-                <li><a href="#">Suspense</a></li>
-                <li><a href="#">Thriller</a></li>
-                <li><a href="#">War</a></li>
-                <li><a href="#">Western</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Audio Lang<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">ENG</a></li>
-                <li><a href="#">ESP</a></li>
-              </ul>
-            </li>
-            -->
 
             <li class="dropdown" id="size_calc">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="bsel">0 bytes</span><b class="caret"></b></a>
@@ -98,11 +60,7 @@
               </ul>
             </li>
 
-
-
-
           </ul>
-
 
           <ul class="nav navbar-nav navbar-right">
             <!-- <li><a href="#">Link</a></li> -->
@@ -117,22 +75,31 @@
             </li>
           </ul>
 
-          <form class="navbar-form navbar-right" role="search">
-              <input type="text" autocomplete="off" class="form-control typeahead" placeholder="Search">
-          </form>
-
         </div><!--/.nav-collapse -->
       </div>
     </div>
 
     <div class="container theme-showcase" role="main">
-      <div id="f_filter"></div>
 
+      <!-- Filter -->
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                Filter
+              </a>
+            </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse">
+            <div id="f_filter" class="panel-body"></div>
+          </div>
+        </div>
+      </div>
+      <!-- /Filter -->
 
-
-      <ul id="movies">
-        
-      </ul>
+      
+      <ul id="movies"></ul>
 
     </div> <!-- /container -->
 
@@ -155,129 +122,11 @@
 
 <!-- Handlebars/Mustache Movie template -->
 <script id="mt_movieTemplate" type="text/html">
-  {{#movies}}
-    <li class="movcan">
-
-      <div class="mth">
-          {{#if poster_path}}
-            <a href="http://www.imdb.com/title/{{imdb_id}}" target="_blank" class="movth">
-              <img width="92" height="138" alt="{{name}}" src="{{poster_url poster_path}}">
-            </a>
-          {{else}}
-            <img width="92" height="138" alt="{{name}}" src="img/notfound.png">
-          {{/if}}
-          
-          <span class="trailers">
-            {{#trailers.youtube}}<span class="btn-group"><a href="http://youtu.be/{{source}}" target="_blank" title="{{name}}"><span class="label label-danger"><span class="glyphicon glyphicon-facetime-video"></span></span></a></span> {{/trailers.youtube}}{{#trailers.quicktime}}<span class="btn-group"  title="{{name}}"><span class="label label-info dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-facetime-video"></span></span><ul class="dropdown-menu" role="menu">{{#sources}}<li><a href="{{source}}" target="_blank">{{size}}</a></li>{{/sources}}</ul></span> {{/trailers.quicktime}}
-          </span>
-      </div>
-
-      <div class="mcnt">
-
-        <h4>
-          <div class="checkbox">
-          <label>
-          <input type="checkbox" name="i{{@index}}"> {{name}}
-          </label>
-          </div>
-        </h4>
-        
-        <p>
-          <span class="label label-elegant" title="Size">{{shortBytes size}}</span>
-          {{#if release_date}}
-          <span class="label label-default" title="Release">{{releaseDate release_date}}</span>
-          {{/if}}
-          <span class="label label-default" title="Length">{{secToTime duration}}</span>
-          {{#if vote_average}}
-          <span class="label label-default" title="Rating">{{vote_average}} <span class="glyphicon glyphicon-star"></span></span>
-          {{/if}}
-          {{#if menu}}
-          <span class="label label-default" title="Has Menu"><span class="glyphicon glyphicon-list-alt"></span></span>
-          {{/if}}
-          <span class="label label-default" title="Bitrate">{{shortBits bitrate}}</span>
-        </p>
-
-        {{#video_tracks}}
-        <p>
-          <span class="label label-elegant">{{videoRes width height}}</span> 
-          <span class="label label-default">{{videoCodec codec}}</span>
-          <span class="label label-default">{{videoProfile profile}}</span>
-          <span class="label label-default">{{aspect}}</span>
-          <span class="label label-default">{{fps}}</span>
-          {{#if bitrate}}
-            <span class="label label-default">{{shortBits bitrate}}</span>
-          {{/if}}
-        </p>
-        {{/video_tracks}}
-
-        {{#audio_tracks}}
-        <p>
-          {{#if lang}}
-            <span class="label label-elegant"><span class="glyphicon glyphicon-volume-up"></span>{{upper lang}}</span>
-          {{else}}
-            <span class="label label-default"><span class="glyphicon glyphicon-volume-up"></span></span> 
-          {{/if}}
-          <span class="label label-default">{{audioCodec codec}}</span>
-          <span class="label label-default">{{audioChan ch}}</span>
-          {{#if bitrate_mode}}
-            <span class="label label-default">{{bitrate_mode}}</span>
-          {{/if}}
-          {{#if sample_rate}}
-          <span class="label label-default">{{audiSample sample_rate}}</span>
-          {{/if}}
-          {{#if bitrate}}
-            <span class="label label-default">{{shortBits bitrate}}</span>
-          {{/if}}
-        </p>
-        {{/audio_tracks}}
-
-        {{#if subtitles}}
-        <p>{{#each subtitles}}<span class="label label-elegant"><span class="glyphicon glyphicon-subtitles"></span> {{upper this}}</span> {{/each}}</p>
-        {{/if}}
-
-      </div>
-    </li>
-  {{/movies}}
+<% include mt_movieTemplate %>
 </script>
 
 <script id="filter_form" type="text/html">
-  <form role="form">
-    <select class="form-control" multiple>
-      <option value="none">[NONE]</option>
-      {{#genres}}<option value="{{_id}}">{{members.0.name}} ({{total}})</option>{{/genres}}
-    </select>
-    <br>
-    <select class="form-control">
-      <option value="none">[NONE]</option>
-      {{#video_width}}<option value="{{_id}}">{{_id}} ({{total}})</option>{{/video_width}}
-    </select>
-    <br>
-    <select class="form-control">
-      <option value="none">[NONE]</option>
-      {{#video_codec}}<option value="{{_id}}">{{_id}} ({{total}})</option>{{/video_codec}}
-    </select>
-    <br>
-    <select class="form-control">
-      <option value="none">[NONE]</option>
-      {{#audio_lang}}<option value="{{_id}}">{{_id}} ({{total}})</option>{{/audio_lang}}
-    </select>
-    <br>
-    <select class="form-control">
-      <option value="none">[NONE]</option>
-      {{#audio_ch}}<option value="{{_id}}">{{_id}} ({{total}})</option>{{/audio_ch}}
-    </select>
-    <br>
-    <select class="form-control">
-      <option value="none">[NONE]</option>
-      {{#audio_codec}}<option value="{{_id}}">{{_id}} ({{total}})</option>{{/audio_codec}}
-    </select>
-    <br>
-    <select class="form-control">
-      <option value="none">[NONE]</option>
-      {{#subs}}<option value="{{_id}}">{{_id}} ({{total}})</option>{{/subs}}
-    </select>
-    <br>
-  </form>
+<% include filter_form %>
 </script>
 
     <!-- CDN JS -->
