@@ -1,0 +1,115 @@
+<form class="form-horizontal" role="form">
+
+  <div class="form-group">
+    <label for="movie_name" class="col-sm-2 control-label">Movie</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control typeahead" id="movie_name" placeholder="Movie">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="cast" class="col-sm-2 control-label">Actor</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="cast" placeholder="Actor">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="crew_director" class="col-sm-2 control-label">Director</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="crew_director" placeholder="Director">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="crew_writer" class="col-sm-2 control-label">Writer</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="crew_writer" placeholder="Writer">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="crew_producer" class="col-sm-2 control-label">Producer</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="crew_producer" placeholder="Producer">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="f_genre" class="col-sm-2 control-label">Genre</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="f_genre" multiple>
+        <option value="none">[NONE]</option>
+        {{#genres}}<option value="{{_id}}">{{members.0.name}} ({{total}})</option>{{/genres}}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="f_width" class="col-sm-2 control-label">Width</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="f_width">
+        <option value="none">[NONE]</option>
+        {{#video_width}}<option value="{{_id}}">{{_id}} ({{total}})</option>{{/video_width}}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="f_codec" class="col-sm-2 control-label">Codec</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="f_codec">
+        <option value="none">[NONE]</option>
+        {{#video_codec}}<option value="{{_id}}">{{_id}} ({{total}})</option>{{/video_codec}}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="f_audio_lang" class="col-sm-2 control-label">Audio Lang</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="f_audio_lang">
+        <option value="none">[NONE]</option>
+        {{#audio_lang}}<option value="{{_id}}">{{_id}} ({{total}})</option>{{/audio_lang}}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="f_audio_ch" class="col-sm-2 control-label">Audio Channels</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="f_audio_ch">
+        <option value="none">[NONE]</option>
+        {{#audio_ch}}<option value="{{_id}}">{{_id}} ({{total}})</option>{{/audio_ch}}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="f_audio_codec" class="col-sm-2 control-label">Audio Codec</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="f_audio_codec">
+        <option value="none">[NONE]</option>
+        {{#audio_codec}}<option value="{{_id}}">{{_id}} ({{total}})</option>{{/audio_codec}}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="f_subs" class="col-sm-2 control-label">Subs Lang</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="f_subs">
+        <option value="none">[NONE]</option>
+        {{#subs}}<option value="{{_id}}">{{_id}} ({{total}})</option>{{/subs}}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Filter</button>
+    </div>
+  </div>
+
+</form>
+

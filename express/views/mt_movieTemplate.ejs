@@ -1,0 +1,83 @@
+  {{#movies}}
+    <li class="movcan">
+
+      <div class="mth">
+          {{#if poster_path}}
+            <a href="http://www.imdb.com/title/{{imdb_id}}" target="_blank" class="movth">
+              <img width="92" height="138" alt="{{name}}" src="{{poster_url poster_path}}">
+            </a>
+          {{else}}
+            <img width="92" height="138" alt="{{name}}" src="img/notfound.png">
+          {{/if}}
+          
+          <span class="trailers">
+            {{#trailers.youtube}}<span class="btn-group"><a href="http://youtu.be/{{source}}" target="_blank" title="{{name}}"><span class="label label-danger"><span class="glyphicon glyphicon-facetime-video"></span></span></a></span> {{/trailers.youtube}}{{#trailers.quicktime}}<span class="btn-group"  title="{{name}}"><span class="label label-info dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-facetime-video"></span></span><ul class="dropdown-menu" role="menu">{{#sources}}<li><a href="{{source}}" target="_blank">{{size}}</a></li>{{/sources}}</ul></span> {{/trailers.quicktime}}
+          </span>
+      </div>
+
+      <div class="mcnt">
+
+        <h4>
+          <div class="checkbox">
+          <label>
+          <input type="checkbox" name="i{{@index}}"> {{name}}
+          </label>
+          </div>
+        </h4>
+        
+        <p>
+          <span class="label label-elegant" title="Size">{{shortBytes size}}</span>
+          {{#if release_date}}
+          <span class="label label-default" title="Release">{{releaseDate release_date}}</span>
+          {{/if}}
+          <span class="label label-default" title="Length">{{secToTime duration}}</span>
+          {{#if vote_average}}
+          <span class="label label-default" title="Rating">{{vote_average}} <span class="glyphicon glyphicon-star"></span></span>
+          {{/if}}
+          {{#if menu}}
+          <span class="label label-default" title="Has Menu"><span class="glyphicon glyphicon-list-alt"></span></span>
+          {{/if}}
+          <span class="label label-default" title="Bitrate">{{shortBits bitrate}}</span>
+        </p>
+
+        {{#video_tracks}}
+        <p>
+          <span class="label label-elegant">{{videoRes width height}}</span> 
+          <span class="label label-default">{{videoCodec codec}}</span>
+          <span class="label label-default">{{videoProfile profile}}</span>
+          <span class="label label-default">{{aspect}}</span>
+          <span class="label label-default">{{fps}}</span>
+          {{#if bitrate}}
+            <span class="label label-default">{{shortBits bitrate}}</span>
+          {{/if}}
+        </p>
+        {{/video_tracks}}
+
+        {{#audio_tracks}}
+        <p>
+          {{#if lang}}
+            <span class="label label-elegant"><span class="glyphicon glyphicon-volume-up"></span>{{upper lang}}</span>
+          {{else}}
+            <span class="label label-default"><span class="glyphicon glyphicon-volume-up"></span></span> 
+          {{/if}}
+          <span class="label label-default">{{audioCodec codec}}</span>
+          <span class="label label-default">{{audioChan ch}}</span>
+          {{#if bitrate_mode}}
+            <span class="label label-default">{{bitrate_mode}}</span>
+          {{/if}}
+          {{#if sample_rate}}
+          <span class="label label-default">{{audiSample sample_rate}}</span>
+          {{/if}}
+          {{#if bitrate}}
+            <span class="label label-default">{{shortBits bitrate}}</span>
+          {{/if}}
+        </p>
+        {{/audio_tracks}}
+
+        {{#if subtitles}}
+        <p>{{#each subtitles}}<span class="label label-elegant"><span class="glyphicon glyphicon-subtitles"></span> {{upper this}}</span> {{/each}}</p>
+        {{/if}}
+
+      </div>
+    </li>
+  {{/movies}}
