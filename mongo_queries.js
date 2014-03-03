@@ -2,6 +2,23 @@
  * MongoDB Queries for dev.
  **/
 
+/*
+
+# Export
+mongoexport --dbpath ./mongo/db/ --db movielib --collection --journal movies --out movies.json
+mongoexport --dbpath ./mongo/db/ --db movielib --collection --journal tmdb_config --out tmdb_config.json
+
+# Import
+mongoimport --dbpath ./mongo/db/ --db movielib --collection movies --file movies.json --stopOnError 
+mongoimport --dbpath ./mongo/db/ --db movielib --collection tmdb_config --file tmdb_config.json --stopOnError 
+
+# Dump
+mongodump --db movielib --dbpath ./mongo/db/ --out movielib_bk
+
+# Restore
+mongorestore --dbpath ./mongo/db/ ./movielib_bk
+
+*/
 
 // subs es
 db.movies.find({
