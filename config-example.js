@@ -1,12 +1,11 @@
-// Config File
+// MongoDB settings
 var config={};
 config.path = '/path/to/movies'
 config.tmdb_key = '123-tmdb-key-123';
-config.only_web_server = false;
 config.auto_open = true;
 config.mongodb = {
 	host: 'localhost',
-	db:   'movielib',
+	db:   'movies',
 	port: 27018
 }
 config.express={
