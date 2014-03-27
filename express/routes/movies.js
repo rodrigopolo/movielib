@@ -211,6 +211,7 @@ module.exports = function(config, app, models, movie_info_db){
 		models.movies.find(query)
 		.sort(sort)
 		.select(selec)
+		//.limit(15)
 		.exec(function(err,r){
 			if(err){
 				console.log(err);

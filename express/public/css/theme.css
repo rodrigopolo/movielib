@@ -15,46 +15,15 @@ body {
   margin: 5px 0;
 }
 
-#movies{
-	list-style-type: none;
+
+#movies .img-responsive {
+    margin: 0 auto;
 }
 
-.movcan{
-	float: left;
-	clear: none;
-	background: #eee;
-	margin: 0 5px 5px 0;
-	padding: 5px;
-	width: 450px;
-	height: 255px;
-	border-radius: 0.5em;
-}
-.mth{
-	margin: 10px 0 0 10px;
-	width: 92px;
-	float: left;
-}
-.mth p{
-	text-align: center;
-}
-.movth{
-	display: block;
-}
-.movth img{
-	border-radius: 0.35em;
+#movies p{
+  margin: 0 0 2px 0;
 }
 
-.mcnt{
-	float: right;
-	width: 326px;
-}
-
-.mcnt p{
-	margin: 0 0 5px 0;
-}
-.mcnt h4{
-	margin-top: 6px;
-}
 .trailers{
 	text-align: center;
 	display: block;
@@ -63,10 +32,6 @@ body {
 #size_list li a{
 	text-align: right;
 }
-.ri{
-	color: rgba(0,0,0,0);
-}
-
 
 
 .tt-query{
@@ -127,3 +92,4 @@ body {
 .twitter-typeahead{
   width: 100%;
 }
+
