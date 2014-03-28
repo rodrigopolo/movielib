@@ -109,7 +109,7 @@ $(function(){
 
 	// Global loader movies options	
 	var mvOps = {
-		sort_by: 'release_date',
+		sort_by: 'modified',
 		sort_order: -1
 	};
 
