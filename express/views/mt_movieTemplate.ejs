@@ -5,12 +5,12 @@
       <div class="row">
         <div class="col-lg-3 col-md-3 col-sm-4 col-xs-3">
         {{#if poster_path}}
-          <a href="http://www.imdb.com/title/{{imdb_id}}">
-            <img alt="{{name}}" src="{{poster_url poster_path}}" class="img-rounded img-responsive">
+          <a href="http://www.imdb.com/title/{{imdb_id}}" target="_blank">
+            <img title="{{original_title}}" src="{{poster_url poster_path}}" class="img-rounded img-responsive">
           </a>
         {{else}}
           <a href="http://www.imdb.com/title/{{imdb_id}}">
-            <img alt="{{name}}" src="img/notfound.png" class="img-rounded img-responsive">
+            <img title="{{original_title}}" src="img/notfound.png" class="img-rounded img-responsive">
           </a>
         {{/if}}
 
