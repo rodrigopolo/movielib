@@ -7,13 +7,13 @@
     "url": ""
   },
   "dependencies": {
-    "mongoose": "~3.8.6",
-    "mimovie": "0.1.10",
-    "moviedb": "~0.1.1",
-    "express": "3.4.8",
-    "ejs": "*"
+    "mongoose": "3.8.x",
+    "moviedb": "0.1.x",
+    "mimovie": "1.0.x",
+    "express": "3.5.x",
+    "ejs": "1.0.x"
   },
   "engines": {
-    "node": "*"
+    "node": "0.10.x"
   }
 }

@@ -28,7 +28,8 @@ models.movies.find()
 	ext: 0
 })
 .exec(function (err, movies) {
-	if(err){
+	if(err){	
+		console.log('models.movies.find');
 		console.log(err);
 	}else{
 

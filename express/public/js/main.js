@@ -23,6 +23,7 @@ function apicom(action, op, done){
 			}
 		},
 		failure: function(errMsg) {
+			console.log('errMsg');
 			console.log(errMsg);
 		}
 	});
@@ -109,7 +110,7 @@ $(function(){
 
 	// Global loader movies options	
 	var mvOps = {
-		sort_by: 'release_date', //modified added created encoded
+		sort_by: 'added', //modified added created encoded
 		sort_order: -1
 	};
 

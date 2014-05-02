@@ -214,6 +214,7 @@ module.exports = function(config, app, models, movie_info_db){
 		//.limit(15)
 		.exec(function(err,r){
 			if(err){
+				console.log('models.movies.find');
 				console.log(err);
 			}
 			done(err,r);

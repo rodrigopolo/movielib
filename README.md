@@ -7,9 +7,9 @@ A Node.js/MongoDB movie library creator.
 * [Node.js](http://nodejs.org/download/)  
   Download and install Node.js  
 * [MongoDB](http://www.mongodb.org/downloads)  
-  Download MongoDB, you can install it or add the bin path to your environment path.  
+  Install MongoDB, install and add the bin path to your environment path.  
 * [MediaInfo](http://mediaarea.net/en/MediaInfo/Download)  
-  Download MediaInfo, you can install it or add the bin path to your environment path.  
+  Download MediaInfo, install and add the bin path to your environment path.  
 * [The Movie Database API Key](https://www.themoviedb.org)
 
 
@@ -47,6 +47,8 @@ A Node.js/MongoDB movie library creator.
 8. Enjoy!
 
 -------
+
+**IMPORTANT NOTE**: Currently Mongoose version 3.8.8 is having issues with MongoDB 2.6.0, to fix this you can edit the MongoDB driver version on the `package.json` making it `"mongodb": "1.4.x"`.
 
 ## License
 
